@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Pizza, Plus } from 'lucide-react';
 import { FaCookieBite } from 'react-icons/fa';
-import { Product } from '@shared/schema';
+import { Product } from '../../../shared/schema';
 
 interface MenuProps {
   onAddToCart: (id: string, name: string, price: number) => void;

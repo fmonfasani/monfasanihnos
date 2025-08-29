@@ -11,7 +11,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { CartItem, OrderFormData } from '@/lib/types';
-import { CalendarSlot } from '@shared/schema';
+import { CalendarSlot } from '../../../shared/schema';
 import { Footprints, Truck, Check } from 'lucide-react';
 
 interface OrderModalProps {
