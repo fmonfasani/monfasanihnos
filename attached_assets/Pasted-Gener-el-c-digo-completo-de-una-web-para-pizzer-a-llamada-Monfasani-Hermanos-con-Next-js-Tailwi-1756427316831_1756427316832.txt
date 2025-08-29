@@ -1,0 +1,41 @@
+Generá el código completo de una web para pizzería llamada “Monfasani Hermanos” con Next.js + TailwindCSS. Debe ser moderna, responsive y rápida. Agregá una **agenda de pedidos** (take-away y delivery).
+
+### Stack
+- Next.js (App Router)
+- TypeScript
+- TailwindCSS
+- DB: Prisma + SQLite (o Supabase si se detecta clave)
+- Auth simple con magic-link por email (NextAuth opcional)
+- Deploy en Vercel
+
+### Secciones
+1) Header: logo, nav (Inicio, Menú, Promos, Sobre, Contacto), botón “Pedir ahora (WhatsApp)”.
+2) Hero: claim, subtítulo, CTA doble (WhatsApp / Hacer pedido).
+3) Menú: tabs Pizzas/Empanadas; cards con imagen, descripción, precio y botón “Agregar”.
+4) Promos: tarjetas de combos (editable desde panel).
+5) Sobre: historia breve + foto.
+6) Contacto: WhatsApp, dirección, horario, mapa.
+7) Footer: redes, links, derechos.
+
+### Agenda de pedidos (core)
+- **Flujo cliente**:
+  - Form para armar pedido (items + cantidades + notas)
+  - Elegir modalidad: Retiro o Delivery (con dirección y radio)
+  - **Selector de fecha y horario** con slots de 15/20 min
+  - Validación de capacidad por franja (ej: 8 pedidos/slot)
+  - Calcular tiempo estimado de preparación
+  - Confirmación + número de pedido
+- **Reglas**:
+  - Horarios de atención configurables (ej: lun-dom 11–15 / 19–24)
+  - Bloqueo de feriados/fechas especiales
+  - Límite de pedidos por slot (parametrizable)
+  - Stock por ítem (opcional): restar stock al confirmar
+- **Persistencia** (Prisma):
+  - `Product(id, name, type["pizza"|"empanada"], price, image, active)`
+  - `Order(id, customerName, phone, email?, mode["takeaway"|"delivery"], address?, notes?, status["pending"|"in_progress"|"ready"|"delivered"|"cancelled"], scheduledAt, createdAt)`
+  - `OrderItem(id, orderId, productId, qty, price)`
+  - `CalendarSlot(id, date, time, capacity, bookedCount)`
+  - `Promotion(id, title, description, price, active)`
+  - `Settings(id, openHoursJSON, slotMinutes, slotCapacity, deliveryRadiusKm)`
+- **API REST**:
+  - `POST /api/orders` (crear pedido + reserva
