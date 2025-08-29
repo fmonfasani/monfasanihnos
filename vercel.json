@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "env": {
+    "DATABASE_URL": "@database_url"
+  },
   "builds": [
     { "src": "server/index.ts", "use": "@vercel/node" },
     { "src": "dist/public/**", "use": "@vercel/static" }
