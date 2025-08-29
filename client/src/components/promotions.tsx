@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Promotion } from '@shared/schema';
+import { Promotion } from '../../../shared/schema';
 
 export default function Promotions() {
   const { data: promotions = [], isLoading } = useQuery<Promotion[]>({
