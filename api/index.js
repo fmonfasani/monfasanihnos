@@ -1,15 +1,45 @@
+"use strict";
+var __create = Object.create;
 var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // server/index.ts
-import express2 from "express";
-import serverless from "serverless-http";
+var index_exports = {};
+__export(index_exports, {
+  app: () => app,
+  default: () => index_default,
+  handler: () => handler
+});
+module.exports = __toCommonJS(index_exports);
+var import_express2 = __toESM(require("express"));
+var import_serverless_http = __toESM(require("serverless-http"));
 
 // server/routes.ts
-import { createServer } from "http";
+var import_http = require("http");
 
 // shared/schema.ts
 var schema_exports = {};
@@ -30,82 +60,82 @@ __export(schema_exports, {
   promotions: () => promotions,
   settings: () => settings
 });
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
-import { createInsertSchema } from "drizzle-zod";
-var products = pgTable("products", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: text("name").notNull(),
-  description: text("description"),
-  type: text("type").notNull(),
+var import_drizzle_orm = require("drizzle-orm");
+var import_pg_core = require("drizzle-orm/pg-core");
+var import_drizzle_orm2 = require("drizzle-orm");
+var import_drizzle_zod = require("drizzle-zod");
+var products = (0, import_pg_core.pgTable)("products", {
+  id: (0, import_pg_core.varchar)("id").primaryKey().default(import_drizzle_orm.sql`gen_random_uuid()`),
+  name: (0, import_pg_core.text)("name").notNull(),
+  description: (0, import_pg_core.text)("description"),
+  type: (0, import_pg_core.text)("type").notNull(),
   // "pizza" | "empanada"
-  price: integer("price").notNull(),
+  price: (0, import_pg_core.integer)("price").notNull(),
   // price in cents
-  image: text("image"),
-  active: boolean("active").notNull().default(true),
-  createdAt: timestamp("created_at").defaultNow()
+  image: (0, import_pg_core.text)("image"),
+  active: (0, import_pg_core.boolean)("active").notNull().default(true),
+  createdAt: (0, import_pg_core.timestamp)("created_at").defaultNow()
 });
-var orders = pgTable("orders", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  orderNumber: text("order_number").notNull().unique(),
-  customerName: text("customer_name").notNull(),
-  customerPhone: text("customer_phone").notNull(),
-  customerEmail: text("customer_email"),
-  mode: text("mode").notNull(),
+var orders = (0, import_pg_core.pgTable)("orders", {
+  id: (0, import_pg_core.varchar)("id").primaryKey().default(import_drizzle_orm.sql`gen_random_uuid()`),
+  orderNumber: (0, import_pg_core.text)("order_number").notNull().unique(),
+  customerName: (0, import_pg_core.text)("customer_name").notNull(),
+  customerPhone: (0, import_pg_core.text)("customer_phone").notNull(),
+  customerEmail: (0, import_pg_core.text)("customer_email"),
+  mode: (0, import_pg_core.text)("mode").notNull(),
   // "takeaway" | "delivery"
-  address: text("address"),
-  neighborhood: text("neighborhood"),
-  reference: text("reference"),
-  notes: text("notes"),
-  status: text("status").notNull().default("pending"),
+  address: (0, import_pg_core.text)("address"),
+  neighborhood: (0, import_pg_core.text)("neighborhood"),
+  reference: (0, import_pg_core.text)("reference"),
+  notes: (0, import_pg_core.text)("notes"),
+  status: (0, import_pg_core.text)("status").notNull().default("pending"),
   // "pending" | "confirmed" | "in_progress" | "ready" | "completed" | "cancelled"
-  scheduledAt: timestamp("scheduled_at").notNull(),
-  totalAmount: integer("total_amount").notNull(),
-  deliveryFee: integer("delivery_fee").default(0),
-  createdAt: timestamp("created_at").defaultNow()
+  scheduledAt: (0, import_pg_core.timestamp)("scheduled_at").notNull(),
+  totalAmount: (0, import_pg_core.integer)("total_amount").notNull(),
+  deliveryFee: (0, import_pg_core.integer)("delivery_fee").default(0),
+  createdAt: (0, import_pg_core.timestamp)("created_at").defaultNow()
 });
-var orderItems = pgTable("order_items", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  orderId: varchar("order_id").notNull().references(() => orders.id),
-  productId: varchar("product_id").notNull().references(() => products.id),
-  quantity: integer("quantity").notNull(),
-  price: integer("price").notNull()
+var orderItems = (0, import_pg_core.pgTable)("order_items", {
+  id: (0, import_pg_core.varchar)("id").primaryKey().default(import_drizzle_orm.sql`gen_random_uuid()`),
+  orderId: (0, import_pg_core.varchar)("order_id").notNull().references(() => orders.id),
+  productId: (0, import_pg_core.varchar)("product_id").notNull().references(() => products.id),
+  quantity: (0, import_pg_core.integer)("quantity").notNull(),
+  price: (0, import_pg_core.integer)("price").notNull()
   // price at time of order
 });
-var calendarSlots = pgTable("calendar_slots", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  date: text("date").notNull(),
+var calendarSlots = (0, import_pg_core.pgTable)("calendar_slots", {
+  id: (0, import_pg_core.varchar)("id").primaryKey().default(import_drizzle_orm.sql`gen_random_uuid()`),
+  date: (0, import_pg_core.text)("date").notNull(),
   // YYYY-MM-DD format
-  time: text("time").notNull(),
+  time: (0, import_pg_core.text)("time").notNull(),
   // HH:MM format
-  capacity: integer("capacity").notNull().default(8),
-  bookedCount: integer("booked_count").notNull().default(0),
-  active: boolean("active").notNull().default(true)
+  capacity: (0, import_pg_core.integer)("capacity").notNull().default(8),
+  bookedCount: (0, import_pg_core.integer)("booked_count").notNull().default(0),
+  active: (0, import_pg_core.boolean)("active").notNull().default(true)
 });
-var promotions = pgTable("promotions", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  title: text("title").notNull(),
-  description: text("description").notNull(),
-  discountPercentage: integer("discount_percentage"),
-  originalPrice: integer("original_price"),
-  promoPrice: integer("promo_price").notNull(),
-  badgeText: text("badge_text"),
-  gradient: text("gradient").notNull(),
+var promotions = (0, import_pg_core.pgTable)("promotions", {
+  id: (0, import_pg_core.varchar)("id").primaryKey().default(import_drizzle_orm.sql`gen_random_uuid()`),
+  title: (0, import_pg_core.text)("title").notNull(),
+  description: (0, import_pg_core.text)("description").notNull(),
+  discountPercentage: (0, import_pg_core.integer)("discount_percentage"),
+  originalPrice: (0, import_pg_core.integer)("original_price"),
+  promoPrice: (0, import_pg_core.integer)("promo_price").notNull(),
+  badgeText: (0, import_pg_core.text)("badge_text"),
+  gradient: (0, import_pg_core.text)("gradient").notNull(),
   // CSS gradient class
-  active: boolean("active").notNull().default(true),
-  createdAt: timestamp("created_at").defaultNow()
+  active: (0, import_pg_core.boolean)("active").notNull().default(true),
+  createdAt: (0, import_pg_core.timestamp)("created_at").defaultNow()
 });
-var settings = pgTable("settings", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  key: text("key").notNull().unique(),
-  value: jsonb("value").notNull(),
-  updatedAt: timestamp("updated_at").defaultNow()
+var settings = (0, import_pg_core.pgTable)("settings", {
+  id: (0, import_pg_core.varchar)("id").primaryKey().default(import_drizzle_orm.sql`gen_random_uuid()`),
+  key: (0, import_pg_core.text)("key").notNull().unique(),
+  value: (0, import_pg_core.jsonb)("value").notNull(),
+  updatedAt: (0, import_pg_core.timestamp)("updated_at").defaultNow()
 });
-var ordersRelations = relations(orders, ({ many }) => ({
+var ordersRelations = (0, import_drizzle_orm2.relations)(orders, ({ many }) => ({
   items: many(orderItems)
 }));
-var orderItemsRelations = relations(orderItems, ({ one }) => ({
+var orderItemsRelations = (0, import_drizzle_orm2.relations)(orderItems, ({ one }) => ({
   order: one(orders, {
     fields: [orderItems.orderId],
     references: [orders.id]
@@ -115,58 +145,58 @@ var orderItemsRelations = relations(orderItems, ({ one }) => ({
     references: [products.id]
   })
 }));
-var productsRelations = relations(products, ({ many }) => ({
+var productsRelations = (0, import_drizzle_orm2.relations)(products, ({ many }) => ({
   orderItems: many(orderItems)
 }));
-var insertProductSchema = createInsertSchema(products).omit({
+var insertProductSchema = (0, import_drizzle_zod.createInsertSchema)(products).omit({
   id: true,
   createdAt: true
 });
-var insertOrderSchema = createInsertSchema(orders).omit({
+var insertOrderSchema = (0, import_drizzle_zod.createInsertSchema)(orders).omit({
   id: true,
   orderNumber: true,
   createdAt: true
 });
-var insertOrderItemSchema = createInsertSchema(orderItems).omit({
+var insertOrderItemSchema = (0, import_drizzle_zod.createInsertSchema)(orderItems).omit({
   id: true
 });
-var insertCalendarSlotSchema = createInsertSchema(calendarSlots).omit({
+var insertCalendarSlotSchema = (0, import_drizzle_zod.createInsertSchema)(calendarSlots).omit({
   id: true
 });
-var insertPromotionSchema = createInsertSchema(promotions).omit({
+var insertPromotionSchema = (0, import_drizzle_zod.createInsertSchema)(promotions).omit({
   id: true,
   createdAt: true
 });
-var insertSettingSchema = createInsertSchema(settings).omit({
+var insertSettingSchema = (0, import_drizzle_zod.createInsertSchema)(settings).omit({
   id: true,
   updatedAt: true
 });
 
 // server/db.ts
-import { Pool, neonConfig } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-serverless";
-import ws from "ws";
-neonConfig.webSocketConstructor = ws;
+var import_serverless = require("@neondatabase/serverless");
+var import_neon_serverless = require("drizzle-orm/neon-serverless");
+var import_ws = __toESM(require("ws"));
+import_serverless.neonConfig.webSocketConstructor = import_ws.default;
 if (!process.env.DATABASE_URL) {
   throw new Error(
     "DATABASE_URL must be set. Did you forget to provision a database?"
   );
 }
-var pool = new Pool({ connectionString: process.env.DATABASE_URL });
-var db = drizzle({ client: pool, schema: schema_exports });
+var pool = new import_serverless.Pool({ connectionString: process.env.DATABASE_URL });
+var db = (0, import_neon_serverless.drizzle)({ client: pool, schema: schema_exports });
 
 // server/storage.ts
-import { eq, and } from "drizzle-orm";
+var import_drizzle_orm3 = require("drizzle-orm");
 var DatabaseStorage = class {
   // Products
   async getProducts() {
-    return await db.select().from(products).where(eq(products.active, true));
+    return await db.select().from(products).where((0, import_drizzle_orm3.eq)(products.active, true));
   }
   async getProductsByType(type) {
-    return await db.select().from(products).where(and(eq(products.type, type), eq(products.active, true)));
+    return await db.select().from(products).where((0, import_drizzle_orm3.and)((0, import_drizzle_orm3.eq)(products.type, type), (0, import_drizzle_orm3.eq)(products.active, true)));
   }
   async getProduct(id) {
-    const [product] = await db.select().from(products).where(eq(products.id, id));
+    const [product] = await db.select().from(products).where((0, import_drizzle_orm3.eq)(products.id, id));
     return product || void 0;
   }
   async createProduct(insertProduct) {
@@ -174,7 +204,7 @@ var DatabaseStorage = class {
     return product;
   }
   async updateProduct(id, updateProduct) {
-    const [product] = await db.update(products).set(updateProduct).where(eq(products.id, id)).returning();
+    const [product] = await db.update(products).set(updateProduct).where((0, import_drizzle_orm3.eq)(products.id, id)).returning();
     return product || void 0;
   }
   // Orders
@@ -193,7 +223,7 @@ var DatabaseStorage = class {
   }
   async getOrder(id) {
     const order = await db.query.orders.findFirst({
-      where: eq(orders.id, id),
+      where: (0, import_drizzle_orm3.eq)(orders.id, id),
       with: {
         items: {
           with: {
@@ -206,7 +236,7 @@ var DatabaseStorage = class {
   }
   async getOrderByNumber(orderNumber) {
     const order = await db.query.orders.findFirst({
-      where: eq(orders.orderNumber, orderNumber),
+      where: (0, import_drizzle_orm3.eq)(orders.orderNumber, orderNumber),
       with: {
         items: {
           with: {
@@ -232,29 +262,29 @@ var DatabaseStorage = class {
     return orderWithItems;
   }
   async updateOrderStatus(id, status) {
-    const [order] = await db.update(orders).set({ status }).where(eq(orders.id, id)).returning();
+    const [order] = await db.update(orders).set({ status }).where((0, import_drizzle_orm3.eq)(orders.id, id)).returning();
     return order || void 0;
   }
   // Calendar Slots
   async getAvailableSlots(date) {
-    return await db.select().from(calendarSlots).where(and(
-      eq(calendarSlots.date, date),
-      eq(calendarSlots.active, true)
+    return await db.select().from(calendarSlots).where((0, import_drizzle_orm3.and)(
+      (0, import_drizzle_orm3.eq)(calendarSlots.date, date),
+      (0, import_drizzle_orm3.eq)(calendarSlots.active, true)
     ));
   }
   async getSlot(date, time) {
-    const [slot] = await db.select().from(calendarSlots).where(and(
-      eq(calendarSlots.date, date),
-      eq(calendarSlots.time, time)
+    const [slot] = await db.select().from(calendarSlots).where((0, import_drizzle_orm3.and)(
+      (0, import_drizzle_orm3.eq)(calendarSlots.date, date),
+      (0, import_drizzle_orm3.eq)(calendarSlots.time, time)
     ));
     return slot || void 0;
   }
   async bookSlot(date, time) {
     const currentSlot = await this.getSlot(date, time);
     if (!currentSlot) return void 0;
-    const [slot] = await db.update(calendarSlots).set({ bookedCount: currentSlot.bookedCount + 1 }).where(and(
-      eq(calendarSlots.date, date),
-      eq(calendarSlots.time, time)
+    const [slot] = await db.update(calendarSlots).set({ bookedCount: currentSlot.bookedCount + 1 }).where((0, import_drizzle_orm3.and)(
+      (0, import_drizzle_orm3.eq)(calendarSlots.date, date),
+      (0, import_drizzle_orm3.eq)(calendarSlots.time, time)
     )).returning();
     return slot || void 0;
   }
@@ -264,10 +294,10 @@ var DatabaseStorage = class {
   }
   // Promotions
   async getActivePromotions() {
-    return await db.select().from(promotions).where(eq(promotions.active, true));
+    return await db.select().from(promotions).where((0, import_drizzle_orm3.eq)(promotions.active, true));
   }
   async getPromotion(id) {
-    const [promotion] = await db.select().from(promotions).where(eq(promotions.id, id));
+    const [promotion] = await db.select().from(promotions).where((0, import_drizzle_orm3.eq)(promotions.id, id));
     return promotion || void 0;
   }
   async createPromotion(insertPromotion) {
@@ -276,7 +306,7 @@ var DatabaseStorage = class {
   }
   // Settings
   async getSetting(key) {
-    const [setting] = await db.select().from(settings).where(eq(settings.key, key));
+    const [setting] = await db.select().from(settings).where((0, import_drizzle_orm3.eq)(settings.key, key));
     return setting || void 0;
   }
   async setSetting(key, value) {
@@ -290,7 +320,7 @@ var DatabaseStorage = class {
 var storage = new DatabaseStorage();
 
 // server/routes.ts
-import { z } from "zod";
+var import_zod = require("zod");
 async function registerRoutes(app2) {
   app2.get("/api/products", async (req, res) => {
     try {
@@ -342,9 +372,9 @@ async function registerRoutes(app2) {
       res.status(500).json({ message: "Failed to fetch order" });
     }
   });
-  const createOrderSchema = z.object({
+  const createOrderSchema = import_zod.z.object({
     order: insertOrderSchema,
-    items: z.array(insertOrderItemSchema)
+    items: import_zod.z.array(insertOrderItemSchema)
   });
   app2.post("/api/orders", async (req, res) => {
     try {
@@ -366,7 +396,7 @@ async function registerRoutes(app2) {
       );
       res.status(201).json(newOrder);
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      if (error instanceof import_zod.z.ZodError) {
         return res.status(400).json({ message: "Invalid order data", errors: error.errors });
       }
       res.status(500).json({ message: "Failed to create order" });
@@ -431,54 +461,53 @@ async function registerRoutes(app2) {
       res.status(500).json({ message: "Failed to save setting" });
     }
   });
-  const httpServer = createServer(app2);
+  const httpServer = (0, import_http.createServer)(app2);
   return httpServer;
 }
 
 // server/vite.ts
-import express from "express";
-import fs from "fs";
-import path2 from "path";
-import { createServer as createViteServer, createLogger } from "vite";
+var import_express = __toESM(require("express"));
+var import_fs = __toESM(require("fs"));
+var import_path2 = __toESM(require("path"));
+var import_vite2 = require("vite");
 
 // vite.config.ts
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
-var vite_config_default = defineConfig({
-  plugins: [
-    react(),
-    runtimeErrorOverlay(),
-    ...process.env.NODE_ENV !== "production" && process.env.REPL_ID !== void 0 ? [
-      await import("@replit/vite-plugin-cartographer").then(
-        (m) => m.cartographer()
-      )
-    ] : []
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets")
-    }
-  },
-  root: path.resolve(import.meta.dirname, "client"),
-  build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
-    emptyOutDir: true
-  },
-  server: {
-    fs: {
-      strict: true,
-      deny: ["**/.*"]
-    }
+var import_vite = require("vite");
+var import_path = __toESM(require("path"));
+var vite_config_default = (0, import_vite.defineConfig)(async () => {
+  const react = (await import("@vitejs/plugin-react")).default;
+  const runtimeErrorOverlay = (await import("@replit/vite-plugin-runtime-error-modal")).default;
+  const plugins = [react(), runtimeErrorOverlay()];
+  if (process.env.NODE_ENV !== "production" && process.env.REPL_ID !== void 0) {
+    const { cartographer } = await import("@replit/vite-plugin-cartographer");
+    plugins.push(cartographer());
   }
+  return {
+    plugins,
+    resolve: {
+      alias: {
+        "@": import_path.default.resolve(__dirname, "client", "src"),
+        "@shared": import_path.default.resolve(__dirname, "shared"),
+        "@assets": import_path.default.resolve(__dirname, "attached_assets")
+      }
+    },
+    root: import_path.default.resolve(__dirname, "client"),
+    build: {
+      outDir: import_path.default.resolve(__dirname, "dist/public"),
+      emptyOutDir: true
+    },
+    server: {
+      fs: {
+        strict: true,
+        deny: ["**/.*"]
+      }
+    }
+  };
 });
 
 // server/vite.ts
-import { nanoid } from "nanoid";
-var viteLogger = createLogger();
+var import_nanoid = require("nanoid");
+var viteLogger = (0, import_vite2.createLogger)();
 function log(message, source = "express") {
   const formattedTime = (/* @__PURE__ */ new Date()).toLocaleTimeString("en-US", {
     hour: "numeric",
@@ -494,8 +523,9 @@ async function setupVite(app2, server) {
     hmr: { server },
     allowedHosts: true
   };
-  const vite = await createViteServer({
-    ...vite_config_default,
+  const resolvedConfig = await vite_config_default();
+  const vite = await (0, import_vite2.createServer)({
+    ...resolvedConfig,
     configFile: false,
     customLogger: {
       ...viteLogger,
@@ -511,16 +541,16 @@ async function setupVite(app2, server) {
   app2.use("*", async (req, res, next) => {
     const url = req.originalUrl;
     try {
-      const clientTemplate = path2.resolve(
-        import.meta.dirname,
+      const clientTemplate = import_path2.default.resolve(
+        __dirname,
         "..",
         "client",
         "index.html"
       );
-      let template = await fs.promises.readFile(clientTemplate, "utf-8");
+      let template = await import_fs.default.promises.readFile(clientTemplate, "utf-8");
       template = template.replace(
         `src="/src/main.tsx"`,
-        `src="/src/main.tsx?v=${nanoid()}"`
+        `src="/src/main.tsx?v=${(0, import_nanoid.nanoid)()}"`
       );
       const page = await vite.transformIndexHtml(url, template);
       res.status(200).set({ "Content-Type": "text/html" }).end(page);
@@ -531,27 +561,27 @@ async function setupVite(app2, server) {
   });
 }
 function serveStatic(app2) {
-  const distPath = path2.resolve(
-    import.meta.dirname,
+  const distPath = import_path2.default.resolve(
+    __dirname,
     "..",
     "dist",
     "public"
   );
-  if (!fs.existsSync(distPath)) {
+  if (!import_fs.default.existsSync(distPath)) {
     throw new Error(
       `Could not find the build directory: ${distPath}, make sure to build the client first`
     );
   }
-  app2.use(express.static(distPath));
+  app2.use(import_express.default.static(distPath));
   app2.use("*", (_req, res) => {
-    res.sendFile(path2.resolve(distPath, "index.html"));
+    res.sendFile(import_path2.default.resolve(distPath, "index.html"));
   });
 }
 
 // server/index.ts
-var app = express2();
-app.use(express2.json());
-app.use(express2.urlencoded({ extended: false }));
+var app = (0, import_express2.default)();
+app.use(import_express2.default.json());
+app.use(import_express2.default.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   const start = Date.now();
   const path3 = req.path;
@@ -590,10 +620,10 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 })();
-var handler = serverless(app);
+var handler = (0, import_serverless_http.default)(app);
 var index_default = app;
-export {
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
   app,
-  index_default as default,
   handler
-};
+});
