@@ -5,3 +5,12 @@ server/public
 vite.config.ts.*
 *.tar.gz
 .env
+# Compilados JS/JSX/TSX
+*.js
+*.jsx
+*.js.map
+*.jsx.map
+
+# Excepto archivos realmente escritos en JS
+!*.config.js
+!vercel.json
