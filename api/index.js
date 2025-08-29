@@ -6,6 +6,7 @@ var __export = (target, all) => {
 
 // server/index.ts
 import express2 from "express";
+import serverless from "serverless-http";
 
 // server/routes.ts
 import { createServer } from "http";
@@ -530,7 +531,12 @@ async function setupVite(app2, server) {
   });
 }
 function serveStatic(app2) {
-  const distPath = path2.resolve(import.meta.dirname, "public");
+  const distPath = path2.resolve(
+    import.meta.dirname,
+    "..",
+    "dist",
+    "public"
+  );
   if (!fs.existsSync(distPath)) {
     throw new Error(
       `Could not find the build directory: ${distPath}, make sure to build the client first`
@@ -543,7 +549,6 @@ function serveStatic(app2) {
 }
 
 // server/index.ts
-import { fileURLToPath } from "url";
 var app = express2();
 app.use(express2.json());
 app.use(express2.urlencoded({ extended: false }));
@@ -571,10 +576,7 @@ app.use((req, res, next) => {
   });
   next();
 });
-var handler = app;
-var index_default = app;
-var isDirectRun = process.argv[1] === fileURLToPath(import.meta.url);
-async function init() {
+(async () => {
   const server = await registerRoutes(app);
   app.use((err, _req, res, _next) => {
     const status = err.status || err.statusCode || 500;
@@ -584,22 +586,14 @@ async function init() {
   });
   if (app.get("env") === "development") {
     await setupVite(app, server);
-  } else {
+  } else if (!process.env.VERCEL) {
     serveStatic(app);
   }
-  if (isDirectRun) {
-    const port = parseInt(process.env.PORT || "5000", 10);
-    server.listen({
-      port,
-      host: "0.0.0.0",
-      reusePort: true
-    }, () => {
-      log(`serving on port ${port}`);
-    });
-  }
-}
-void init();
+})();
+var handler = serverless(app);
+var index_default = app;
 export {
+  app,
   index_default as default,
   handler
 };
