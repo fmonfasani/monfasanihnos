@@ -2,6 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import serverless from "serverless-http";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { fileURLToPath } from "url";
 
 export const app = express();
 app.use(express.json());
@@ -37,8 +38,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// setup routes and other middleware asynchronously
+
 (async () => {
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -57,6 +59,7 @@ app.use((req, res, next) => {
   } else {
     serveStatic(app);
   }
+
 })();
 
 export const handler = serverless(app);
