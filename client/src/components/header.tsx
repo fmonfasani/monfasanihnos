@@ -25,35 +25,35 @@ export default function Header({ cartCount, onCartClick, onOrderClick }: HeaderP
     <>
       <button 
         onClick={() => scrollToSection('inicio')} 
-        className="text-foreground hover:text-primary transition-colors font-medium"
+        className="hover:text-primary transition-colors font-medium"
         data-testid="link-inicio"
       >
         Inicio
       </button>
       <button 
         onClick={() => scrollToSection('menu')} 
-        className="text-foreground hover:text-primary transition-colors font-medium"
+        className="hover:text-primary transition-colors font-medium"
         data-testid="link-menu"
       >
         Menú
       </button>
       <button 
         onClick={() => scrollToSection('promos')} 
-        className="text-foreground hover:text-primary transition-colors font-medium"
+        className="hover:text-primary transition-colors font-medium"
         data-testid="link-promos"
       >
         Promos
       </button>
       <button 
         onClick={() => scrollToSection('sobre')} 
-        className="text-foreground hover:text-primary transition-colors font-medium"
+        className="hover:text-primary transition-colors font-medium"
         data-testid="link-sobre"
       >
         Sobre
       </button>
       <button 
         onClick={() => scrollToSection('contacto')} 
-        className="text-foreground hover:text-primary transition-colors font-medium"
+        className="hover:text-primary transition-colors font-medium"
         data-testid="link-contacto"
       >
         Contacto
@@ -62,7 +62,7 @@ export default function Header({ cartCount, onCartClick, onOrderClick }: HeaderP
   );
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-sm">
+    <header className="sticky top-0 z-50 backdrop-blur-md border-b border-border shadow-sm" style={{ backgroundColor: 'hsl(var(--header-bg))', color: 'hsl(var(--header-foreground))' }}>
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}

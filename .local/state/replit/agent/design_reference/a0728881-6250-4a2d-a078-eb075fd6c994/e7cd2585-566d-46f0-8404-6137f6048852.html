@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monfasani Hermanos - Pizzería Tradicional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    sans: ["var(--font-sans)"],
+                    serif: ["var(--font-serif)"],
+                }
+            },
+        }
+    };
+    </script>
+    <style>
+        :root {
+            --background: hsl(48 100% 98%);
+            --foreground: hsl(25 95% 15%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(25 95% 15%);
+            --primary: hsl(1 83% 63%);
+            --primary-foreground: hsl(0 0% 98%);
+            --secondary: hsl(158 64% 40%);
+            --secondary-foreground: hsl(0 0% 98%);
+            --muted: hsl(48 100% 95%);
+            --muted-foreground: hsl(25 10% 50%);
+            --accent: hsl(43 96% 56%);
+            --accent-foreground: hsl(25 95% 15%);
+            --destructive: hsl(0 84% 60%);
+            --destructive-foreground: hsl(0 0% 98%);
+            --border: hsl(25 20% 82%);
+            --input: hsl(25 20% 82%);
+            --ring: hsl(1 83% 63%);
+            --radius: 0.75rem;
+            --font-sans: 'Inter', ui-sans-serif, system-ui;
+            --font-serif: 'Playfair Display', ui-serif, Georgia;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Italiana&display=swap');
+        
+        .font-brand { font-family: 'Italiana', cursive; }
+        .font-heading { font-family: 'Playfair Display', serif; }
+        .bg-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.15) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-background text-foreground font-sans antialiased">
+    <!-- @COMPONENT: Header -->
+    <header class="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                        <i class="fas fa-pizza-slice text-primary-foreground text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-brand text-2xl text-primary">Monfasani</h1>
+                        <p class="text-xs text-muted-foreground -mt-1">Hermanos</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-foreground hover:text-primary transition-colors font-medium">Inicio</a>
+                    <a href="#menu" class="text-foreground hover:text-primary transition-colors font-medium">Menú</a>
+                    <a href="#promos" class="text-foreground hover:text-primary transition-colors font-medium">Promos</a>
+                    <a href="#sobre" class="text-foreground hover:text-primary transition-colors font-medium">Sobre</a>
+                    <a href="#contacto" class="text-foreground hover:text-primary transition-colors font-medium">Contacto</a>
+                </nav>
+
+                <!-- CTA Buttons -->
+                <div class="flex items-center space-x-3">
+                    <!-- Cart Button -->
+                    <button id="cart-btn" class="relative p-2 text-foreground hover:text-primary transition-colors">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium" style="display: none;">0</span>
+                    </button>
+                    
+                    <!-- WhatsApp Button -->
+                    <a href="https://wa.me/5491234567890" class="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2">
+                        <i class="fab fa-whatsapp"></i>
+                        <span class="hidden sm:inline">Pedir ahora</span>
+                    </a>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="md:hidden p-2 text-foreground">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <nav id="mobile-menu" class="md:hidden mt-4 pb-4 border-t border-border pt-4 hidden">
+                <div class="flex flex-col space-y-4">
+                    <a href="#inicio" class="text-foreground hover:text-primary transition-colors font-medium">Inicio</a>
+                    <a href="#menu" class="text-foreground hover:text-primary transition-colors font-medium">Menú</a>
+                    <a href="#promos" class="text-foreground hover:text-primary transition-colors font-medium">Promos</a>
+                    <a href="#sobre" class="text-foreground hover:text-primary transition-colors font-medium">Sobre</a>
+                    <a href="#contacto" class="text-foreground hover:text-primary transition-colors font-medium">Contacto</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: Hero Section -->
+    <section id="inicio" class="relative min-h-screen flex items-center">
+        <!-- Traditional Italian pizza preparation scene with chef stretching dough -->
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080'); background-attachment: fixed;"></div>
+        <div class="absolute inset-0 bg-black/50"></div>
+        
+        <div class="relative container mx-auto px-4 text-center text-white">
+            <h1 class="font-heading text-5xl md:text-7xl font-bold mb-6">
+                La Tradición <br>
+                <span class="text-accent">que Sabe</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto leading-relaxed">
+                Desde 1987, elaborando las mejores pizzas artesanales con recetas familiares tradicionales
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button id="order-now-btn" class="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 flex items-center space-x-3">
+                    <i class="fas fa-utensils"></i>
+                    <span>Hacer Pedido</span>
+                </button>
+                <a href="https://wa.me/5491234567890" class="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 flex items-center space-x-3">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </a>
+            </div>
+
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-clock text-accent-foreground text-2xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-semibold mb-2">Entrega Rápida</h3>
+                    <p class="text-gray-200">30-45 minutos promedio</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-leaf text-accent-foreground text-2xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-semibold mb-2">Ingredientes Frescos</h3>
+                    <p class="text-gray-200">Seleccionados diariamente</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-heart text-accent-foreground text-2xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-semibold mb-2">Tradición Familiar</h3>
+                    <p class="text-gray-200">Más de 35 años de experiencia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Hero Section -->
+
+    <!-- @COMPONENT: Menu Section -->
+    <section id="menu" class="py-20 bg-muted">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">Nuestro Menú</h2>
+                <p class="text-xl text-muted-foreground max-w-2xl mx-auto">Descubrí el sabor auténtico de nuestras especialidades, preparadas con amor y tradición</p>
+            </div>
+
+            <!-- Menu Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-background rounded-lg p-1 shadow-lg">
+                    <button id="pizzas-tab" class="menu-tab active px-6 py-3 rounded-md font-semibold transition-all">
+                        <i class="fas fa-pizza-slice mr-2"></i>Pizzas
+                    </button>
+                    <button id="empanadas-tab" class="menu-tab px-6 py-3 rounded-md font-semibold transition-all">
+                        <i class="fas fa-cookie-bite mr-2"></i>Empanadas
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pizzas Menu -->
+            <div id="pizzas-content" class="menu-content">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- @MAP: pizzas.map(pizza => ( -->
+                    <div class="bg-card rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-mock="true">
+                        <!-- Delicious margherita pizza with fresh basil and mozzarella -->
+                        <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" alt="Pizza Margherita" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-heading text-xl font-semibold mb-2" data-bind="pizza.name">Pizza Margherita</h3>
+                            <p class="text-muted-foreground mb-4" data-bind="pizza.description">Salsa de tomate, mozzarella fresca, albahaca y aceite de oliva</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-2xl text-primary" data-bind="pizza.price">$2.850</span>
+                                <button class="add-to-cart bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors" data-product-id="1" data-product-name="Pizza Margherita" data-product-price="2850">
+                                    <i class="fas fa-plus mr-2"></i>Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-mock="true">
+                        <!-- Pepperoni pizza with melted cheese and spicy pepperoni slices -->
+                        <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" alt="Pizza Pepperoni" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-heading text-xl font-semibold mb-2">Pizza Pepperoni</h3>
+                            <p class="text-muted-foreground mb-4">Salsa de tomate, mozzarella y abundante pepperoni</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-2xl text-primary">$3.200</span>
+                                <button class="add-to-cart bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors" data-product-id="2" data-product-name="Pizza Pepperoni" data-product-price="3200">
+                                    <i class="fas fa-plus mr-2"></i>Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-mock="true">
+                        <!-- Quattro formaggi pizza with four different types of cheese -->
+                        <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" alt="Pizza Cuatro Quesos" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-heading text-xl font-semibold mb-2">Pizza Cuatro Quesos</h3>
+                            <p class="text-muted-foreground mb-4">Mozzarella, parmesano, gorgonzola y provolone</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-2xl text-primary">$3.600</span>
+                                <button class="add-to-cart bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors" data-product-id="3" data-product-name="Pizza Cuatro Quesos" data-product-price="3600">
+                                    <i class="fas fa-plus mr-2"></i>Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-mock="true">
+                        <!-- Prosciutto and arugula pizza with fresh ingredients -->
+                        <img src="https://pixabay.com/get/gecec7cb9e8515655a93330ca84269a33c17508a4bf29dc9633d69f2dfaa19ce79df7ca7b4593785bd3f536cb73cecabe8ce69f1241472fc156a1ce8a9e30cba2_1280.jpg" alt="Pizza Prosciutto" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-heading text-xl font-semibold mb-2">Pizza Prosciutto</h3>
+                            <p class="text-muted-foreground mb-4">Prosciutto crudo, rúcula, parmesano y aceite de oliva</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-2xl text-primary">$4.200</span>
+                                <button class="add-to-cart bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors" data-product-id="4" data-product-name="Pizza Prosciutto" data-product-price="4200">
+                                    <i class="fas fa-plus mr-2"></i>Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-mock="true">
+                        <!-- Vegetarian pizza with colorful fresh vegetables -->
+                        <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" alt="Pizza Vegetariana" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-heading text-xl font-semibold mb-2">Pizza Vegetariana</h3>
+                            <p class="text-muted-foreground mb-4">Pimientos, hongos, cebolla, tomate y aceitunas</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-2xl text-primary">$3.400</span>
+                                <button class="add-to-cart bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors" data-product-id="5" data-product-name="Pizza Vegetariana" data-product-price="3400">
+                                    <i class="fas fa-plus mr-2"></i>Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-mock="true">
+                        <!-- Supreme pizza with multiple toppings and rich flavors -->
+                        <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" alt="Pizza Suprema" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-heading text-xl font-semibold mb-2">Pizza Suprema</h3>
+                            <p class="text-muted-foreground mb-4">Pepperoni, salchichas, pimientos, hongos y cebolla</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-2xl text-primary">$4.500</span>
+                                <button class="add-to-cart bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors" data-product-id="6" data-product-name="Pizza Suprema" data-product-price="4500">
+                                    <i class="fas fa-plus mr-2"></i>Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+            </div>
+
+            <!-- Empanadas Menu -->
+            <div id="empanadas-content" class="menu-content hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- @MAP: empanadas.map(empanada => ( -->
+                    <div class="bg-card rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-mock="true">
+                        <!-- Golden-brown baked empanadas with flaky crust -->
+                        <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400" alt="Empanadas de Carne" class="w-full h-32 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-heading text-lg font-semibold mb-2">Carne</h3>
+                            <p class="text-muted-foreground text-sm mb-3">Carne cortada a cuchillo, cebolla y especias</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-lg text-primary">$450</span>
+                                <button class="add-to-cart bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-1 rounded text-sm font-medium transition-colors" data-product-id="7" data-product-name="Empanada de Carne" data-product-price="450">
+                                    <i class="fas fa-plus mr-1"></i>Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-mock="true">
+                        <!-- Chicken empanadas with herbs and vegetables -->
+                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400" alt="Empanadas de Pollo" class="w-full h-32 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-heading text-lg font-semibold mb-2">Pollo</h3>
+                            <p class="text-muted-foreground text-sm mb-3">Pollo desmenuzado con verduras</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-lg text-primary">$420</span>
+                                <button class="add-to-cart bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-1 rounded text-sm font-medium transition-colors" data-product-id="8" data-product-name="Empanada de Pollo" data-product-price="420">
+                                    <i class="fas fa-plus mr-1"></i>Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-mock="true">
+                        <!-- Ham and cheese empanadas, a classic combination -->
+                        <img src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400" alt="Empanadas de Jamón y Queso" class="w-full h-32 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-heading text-lg font-semibold mb-2">Jamón y Queso</h3>
+                            <p class="text-muted-foreground text-sm mb-3">Jamón cocido y queso cremoso</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-lg text-primary">$400</span>
+                                <button class="add-to-cart bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-1 rounded text-sm font-medium transition-colors" data-product-id="9" data-product-name="Empanada de Jamón y Queso" data-product-price="400">
+                                    <i class="fas fa-plus mr-1"></i>Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-mock="true">
+                        <!-- Vegetable empanadas with colorful filling -->
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400" alt="Empanadas de Verdura" class="w-full h-32 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-heading text-lg font-semibold mb-2">Verdura</h3>
+                            <p class="text-muted-foreground text-sm mb-3">Acelga, ricotta y huevo</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-lg text-primary">$380</span>
+                                <button class="add-to-cart bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-1 rounded text-sm font-medium transition-colors" data-product-id="10" data-product-name="Empanada de Verdura" data-product-price="380">
+                                    <i class="fas fa-plus mr-1"></i>Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Menu Section -->
+
+    <!-- @COMPONENT: Promotions Section -->
+    <section id="promos" class="py-20 bg-background">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">Promociones</h2>
+                <p class="text-xl text-muted-foreground">Las mejores ofertas para que disfrutes más por menos</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- @MAP: promotions.map(promo => ( -->
+                <div class="bg-gradient-to-br from-primary to-primary/80 rounded-lg p-6 text-primary-foreground relative overflow-hidden" data-mock="true">
+                    <div class="absolute top-0 right-0 bg-accent text-accent-foreground px-3 py-1 rounded-bl-lg font-bold">
+                        20% OFF
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold mb-3">Combo Familiar</h3>
+                    <p class="mb-4 opacity-90">2 Pizzas grandes + 1 docena de empanadas + Bebida 2L</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-sm line-through opacity-75">$12.500</span>
+                            <div class="text-3xl font-bold">$9.999</div>
+                        </div>
+                        <button class="bg-primary-foreground text-primary px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+                            Pedir Ya
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-secondary to-secondary/80 rounded-lg p-6 text-secondary-foreground relative overflow-hidden" data-mock="true">
+                    <div class="absolute top-0 right-0 bg-accent text-accent-foreground px-3 py-1 rounded-bl-lg font-bold">
+                        25% OFF
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold mb-3">Martes de Empanadas</h3>
+                    <p class="mb-4 opacity-90">2 docenas de empanadas surtidas</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-sm line-through opacity-75">$4.800</span>
+                            <div class="text-3xl font-bold">$3.600</div>
+                        </div>
+                        <button class="bg-secondary-foreground text-secondary px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+                            Pedir Ya
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-accent to-accent/80 rounded-lg p-6 text-accent-foreground relative overflow-hidden" data-mock="true">
+                    <div class="absolute top-0 right-0 bg-primary text-primary-foreground px-3 py-1 rounded-bl-lg font-bold">
+                        15% OFF
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold mb-3">Jueves de Pizza</h3>
+                    <p class="mb-4 opacity-90">Pizza grande + 6 empanadas + Postre</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-sm line-through opacity-75">$6.200</span>
+                            <div class="text-3xl font-bold">$5.270</div>
+                        </div>
+                        <button class="bg-accent-foreground text-accent px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+                            Pedir Ya
+                        </button>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Promotions Section -->
+
+    <!-- @COMPONENT: About Section -->
+    <section id="sobre" class="py-20 bg-muted">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">Nuestra Historia</h2>
+                    <p class="text-lg text-muted-foreground mb-6 leading-relaxed">
+                        En 1987, los hermanos Giuseppe y Antonio Monfasani llegaron desde Nápoles con un sueño: 
+                        compartir los sabores auténticos de la pizza tradicional italiana en Argentina.
+                    </p>
+                    <p class="text-lg text-muted-foreground mb-6 leading-relaxed">
+                        Con más de 35 años de tradición familiar, seguimos elaborando nuestras pizzas con la misma 
+                        pasión del primer día, utilizando ingredientes frescos y recetas que han pasado de generación 
+                        en generación.
+                    </p>
+                    <div class="flex items-center space-x-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-primary">35+</div>
+                            <div class="text-muted-foreground">Años de tradición</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-primary">50k+</div>
+                            <div class="text-muted-foreground">Clientes felices</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-primary">100%</div>
+                            <div class="text-muted-foreground">Artesanal</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <!-- Italian pizza chef in traditional kitchen preparing fresh dough -->
+                    <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" alt="Hermanos Monfasani en la cocina" class="rounded-lg shadow-xl w-full">
+                    <div class="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-lg shadow-lg">
+                        <div class="font-heading text-xl font-bold">¡La receta secreta!</div>
+                        <div class="text-sm opacity-90">Masa fermentada 24 horas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: About Section -->
+
+    <!-- @COMPONENT: Contact Section -->
+    <section id="contacto" class="py-20 bg-background">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">Contacto</h2>
+                <p class="text-xl text-muted-foreground">Estamos aquí para servirte los mejores sabores</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="space-y-8">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fab fa-whatsapp text-primary-foreground text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-xl font-semibold mb-2">WhatsApp</h3>
+                            <p class="text-muted-foreground mb-2">Hacé tu pedido directamente por WhatsApp</p>
+                            <a href="https://wa.me/5491234567890" class="text-primary hover:text-primary/80 font-medium">
+                                +54 9 11 1234-5678
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-map-marker-alt text-secondary-foreground text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-xl font-semibold mb-2">Dirección</h3>
+                            <p class="text-muted-foreground">Av. Corrientes 1234, Capital Federal</p>
+                            <p class="text-muted-foreground">Buenos Aires, Argentina</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-clock text-accent-foreground text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-xl font-semibold mb-2">Horarios</h3>
+                            <div class="text-muted-foreground space-y-1">
+                                <p>Lunes a Domingo</p>
+                                <p>11:00 - 15:00 / 19:00 - 24:00</p>
+                                <p class="text-sm text-primary">No cerramos ningún día</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-truck text-muted-foreground text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-xl font-semibold mb-2">Delivery</h3>
+                            <p class="text-muted-foreground">Radio de 5km desde nuestro local</p>
+                            <p class="text-muted-foreground">Envío sin cargo en compras mayores a $4.000</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-card rounded-lg shadow-lg overflow-hidden">
+                    <!-- Google Maps view of pizzeria location in Buenos Aires -->
+                    <div class="h-96 bg-muted flex items-center justify-center">
+                        <div class="text-center text-muted-foreground">
+                            <i class="fas fa-map text-4xl mb-4"></i>
+                            <p>Mapa interactivo</p>
+                            <p class="text-sm">Av. Corrientes 1234, CABA</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Contact Section -->
+
+    <!-- @COMPONENT: Footer -->
+    <footer class="bg-foreground text-background py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                            <i class="fas fa-pizza-slice text-primary-foreground"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-brand text-xl text-primary">Monfasani</h3>
+                            <p class="text-xs text-gray-400 -mt-1">Hermanos</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Tradición italiana desde 1987. Las mejores pizzas artesanales de Buenos Aires.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-4">Enlaces</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#inicio" class="hover:text-primary transition-colors">Inicio</a></li>
+                        <li><a href="#menu" class="hover:text-primary transition-colors">Menú</a></li>
+                        <li><a href="#promos" class="hover:text-primary transition-colors">Promociones</a></li>
+                        <li><a href="#sobre" class="hover:text-primary transition-colors">Sobre nosotros</a></li>
+                        <li><a href="#contacto" class="hover:text-primary transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li>Av. Corrientes 1234</li>
+                        <li>Capital Federal, Argentina</li>
+                        <li>+54 9 11 1234-5678</li>
+                        <li>info@monfasanihermanos.com</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-4">Síguenos</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary/80 transition-colors">
+                            <i class="fab fa-facebook-f text-primary-foreground"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary/80 transition-colors">
+                            <i class="fab fa-instagram text-primary-foreground"></i>
+                        </a>
+                        <a href="https://wa.me/5491234567890" class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center hover:bg-secondary/80 transition-colors">
+                            <i class="fab fa-whatsapp text-secondary-foreground"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2024 Monfasani Hermanos. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <!-- @COMPONENT: Shopping Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="fixed right-0 top-0 h-full w-full max-w-md bg-background shadow-xl transform translate-x-full transition-transform duration-300" id="cart-panel">
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-between p-6 border-b border-border">
+                    <h2 class="font-heading text-xl font-semibold">Mi Pedido</h2>
+                    <button id="close-cart" class="p-2 hover:bg-muted rounded-lg transition-colors">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div id="cart-items" class="space-y-4">
+                        <!-- Cart items will be dynamically added here -->
+                        <div id="empty-cart" class="text-center text-muted-foreground py-12">
+                            <i class="fas fa-shopping-cart text-4xl mb-4"></i>
+                            <p>Tu carrito está vacío</p>
+                            <p class="text-sm">Agregá productos desde el menú</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-t border-border p-6">
+                    <div id="cart-summary" class="hidden">
+                        <div class="flex justify-between text-lg font-semibold mb-4">
+                            <span>Total:</span>
+                            <span id="cart-total">$0</span>
+                        </div>
+                        <button id="checkout-btn" class="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-lg font-semibold transition-colors">
+                            Finalizar Pedido
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Shopping Cart Modal -->
+
+    <!-- @COMPONENT: Order Modal -->
+    <div id="order-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-background rounded-lg shadow-xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6 border-b border-border">
+                    <div class="flex items-center justify-between">
+                        <h2 class="font-heading text-2xl font-semibold">Finalizar Pedido</h2>
+                        <button id="close-order-modal" class="p-2 hover:bg-muted rounded-lg transition-colors">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <form id="order-form" class="space-y-6">
+                        <!-- Customer Information -->
+                        <div>
+                            <h3 class="font-heading text-lg font-semibold mb-4">Información del Cliente</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="customer-name" class="block text-sm font-medium mb-2">Nombre completo *</label>
+                                    <input type="text" id="customer-name" required class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="customer-phone" class="block text-sm font-medium mb-2">Teléfono *</label>
+                                    <input type="tel" id="customer-phone" required class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label for="customer-email" class="block text-sm font-medium mb-2">Email (opcional)</label>
+                                    <input type="email" id="customer-email" class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Method -->
+                        <div>
+                            <h3 class="font-heading text-lg font-semibold mb-4">Modalidad</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="relative">
+                                    <input type="radio" name="delivery-method" value="takeaway" checked class="sr-only">
+                                    <div class="delivery-option border-2 border-border rounded-lg p-4 cursor-pointer hover:border-primary transition-colors">
+                                        <div class="flex items-center space-x-3">
+                                            <i class="fas fa-walking text-2xl text-primary"></i>
+                                            <div>
+                                                <div class="font-semibold">Retiro en local</div>
+                                                <div class="text-sm text-muted-foreground">Sin costo adicional</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="relative">
+                                    <input type="radio" name="delivery-method" value="delivery" class="sr-only">
+                                    <div class="delivery-option border-2 border-border rounded-lg p-4 cursor-pointer hover:border-primary transition-colors">
+                                        <div class="flex items-center space-x-3">
+                                            <i class="fas fa-motorcycle text-2xl text-primary"></i>
+                                            <div>
+                                                <div class="font-semibold">Delivery</div>
+                                                <div class="text-sm text-muted-foreground">$500 (gratis +$4000)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Address -->
+                        <div id="delivery-address" class="hidden">
+                            <h3 class="font-heading text-lg font-semibold mb-4">Dirección de Entrega</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="address" class="block text-sm font-medium mb-2">Dirección completa *</label>
+                                    <input type="text" id="address" placeholder="Calle, número, piso, departamento" class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="neighborhood" class="block text-sm font-medium mb-2">Barrio</label>
+                                        <input type="text" id="neighborhood" class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label for="reference" class="block text-sm font-medium mb-2">Referencia</label>
+                                        <input type="text" id="reference" placeholder="Entre qué calles, punto de referencia" class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Schedule -->
+                        <div>
+                            <h3 class="font-heading text-lg font-semibold mb-4">Fecha y Hora</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="order-date" class="block text-sm font-medium mb-2">Fecha *</label>
+                                    <input type="date" id="order-date" required class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="order-time" class="block text-sm font-medium mb-2">Hora *</label>
+                                    <select id="order-time" required class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent">
+                                        <option value="">Seleccionar horario</option>
+                                        <!-- Time slots will be populated dynamically -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="time-slots" class="mt-4 grid grid-cols-3 gap-2">
+                                <!-- Time slots will be dynamically populated -->
+                            </div>
+                        </div>
+
+                        <!-- Order Notes -->
+                        <div>
+                            <label for="order-notes" class="block text-sm font-medium mb-2">Notas adicionales</label>
+                            <textarea id="order-notes" rows="3" placeholder="Aclaraciones sobre tu pedido..." class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"></textarea>
+                        </div>
+
+                        <!-- Order Summary -->
+                        <div class="bg-muted rounded-lg p-4">
+                            <h3 class="font-heading text-lg font-semibold mb-3">Resumen del Pedido</h3>
+                            <div id="order-summary" class="space-y-2 mb-4">
+                                <!-- Order items will be populated here -->
+                            </div>
+                            <div class="border-t border-border pt-3">
+                                <div class="flex justify-between text-lg font-semibold">
+                                    <span>Total:</span>
+                                    <span id="order-total">$0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-lg font-semibold transition-colors">
+                            Confirmar Pedido
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Order Modal -->
+
+    <!-- @COMPONENT: Order Confirmation Modal -->
+    <div id="confirmation-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-background rounded-lg shadow-xl max-w-md w-full">
+                <div class="p-8 text-center">
+                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-check text-secondary-foreground text-2xl"></i>
+                    </div>
+                    <h2 class="font-heading text-2xl font-semibold mb-4">¡Pedido Confirmado!</h2>
+                    <p class="text-muted-foreground mb-6">Tu pedido ha sido recibido exitosamente</p>
+                    
+                    <div class="bg-muted rounded-lg p-4 mb-6">
+                        <div class="text-sm text-muted-foreground mb-1">Número de pedido</div>
+                        <div class="font-bold text-xl" id="order-number">#12345</div>
+                    </div>
+                    
+                    <p class="text-sm text-muted-foreground mb-6">
+                        Te contactaremos por WhatsApp para confirmar los detalles
+                    </p>
+                    
+                    <button id="close-confirmation" class="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-lg font-semibold transition-colors">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Order Confirmation Modal -->
+
+    <script>
+        // TODO: Implement full cart and order management system with API integration
+        (function() {
+            // Cart management
+            let cart = [];
+            let cartCount = 0;
+
+            // DOM elements
+            const cartBtn = document.getElementById('cart-btn');
+            const cartModal = document.getElementById('cart-modal');
+            const cartPanel = document.getElementById('cart-panel');
+            const closeCart = document.getElementById('close-cart');
+            const cartItems = document.getElementById('cart-items');
+            const cartCountEl = document.getElementById('cart-count');
+            const emptyCart = document.getElementById('empty-cart');
+            const cartSummary = document.getElementById('cart-summary');
+            const cartTotal = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            // Order modal elements
+            const orderModal = document.getElementById('order-modal');
+            const closeOrderModal = document.getElementById('close-order-modal');
+            const orderForm = document.getElementById('order-form');
+            const deliveryAddressDiv = document.getElementById('delivery-address');
+            const orderSummary = document.getElementById('order-summary');
+            const orderTotal = document.getElementById('order-total');
+
+            // Confirmation modal
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const closeConfirmation = document.getElementById('close-confirmation');
+            const orderNumber = document.getElementById('order-number');
+
+            // Menu tabs
+            const pizzasTab = document.getElementById('pizzas-tab');
+            const empanadasTab = document.getElementById('empanadas-tab');
+            const pizzasContent = document.getElementById('pizzas-content');
+            const empanadasContent = document.getElementById('empanadas-content');
+
+            // Mobile menu
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // Order now button
+            const orderNowBtn = document.getElementById('order-now-btn');
+
+            // Add to cart functionality
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.add-to-cart')) {
+                    const btn = e.target.closest('.add-to-cart');
+                    const productId = btn.dataset.productId;
+                    const productName = btn.dataset.productName;
+                    const productPrice = parseInt(btn.dataset.productPrice);
+                    
+                    addToCart(productId, productName, productPrice);
+                }
+            });
+
+            function addToCart(id, name, price) {
+                const existingItem = cart.find(item => item.id === id);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id: id,
+                        name: name,
+                        price: price,
+                        quantity: 1
+                    });
+                }
+                
+                updateCartUI();
+                
+                // Show cart panel briefly
+                showCart();
+            }
+
+            function updateCartUI() {
+                cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+                
+                if (cartCount > 0) {
+                    cartCountEl.textContent = cartCount;
+                    cartCountEl.style.display = 'flex';
+                    emptyCart.style.display = 'none';
+                    cartSummary.classList.remove('hidden');
+                } else {
+                    cartCountEl.style.display = 'none';
+                    emptyCart.style.display = 'block';
+                    cartSummary.classList.add('hidden');
+                }
+
+                // Update cart items
+                cartItems.innerHTML = '';
+                if (cart.length > 0) {
+                    cart.forEach(item => {
+                        const cartItem = document.createElement('div');
+                        cartItem.className = 'flex items-center justify-between bg-muted rounded-lg p-3';
+                        cartItem.innerHTML = `
+                            <div class="flex-1">
+                                <div class="font-medium">${item.name}</div>
+                                <div class="text-sm text-muted-foreground">$${item.price.toLocaleString()}</div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="decrease-qty w-8 h-8 bg-background rounded-full flex items-center justify-center" data-id="${item.id}">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                                <span class="w-8 text-center">${item.quantity}</span>
+                                <button class="increase-qty w-8 h-8 bg-background rounded-full flex items-center justify-center" data-id="${item.id}">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                        `;
+                        cartItems.appendChild(cartItem);
+                    });
+                    cartItems.appendChild(emptyCart);
+                }
+
+                // Update total
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                cartTotal.textContent = `$${total.toLocaleString()}`;
+                orderTotal.textContent = `$${total.toLocaleString()}`;
+            }
+
+            // Quantity controls
+            cartItems.addEventListener('click', function(e) {
+                if (e.target.closest('.decrease-qty')) {
+                    const id = e.target.closest('.decrease-qty').dataset.id;
+                    const item = cart.find(item => item.id === id);
+                    if (item) {
+                        item.quantity -= 1;
+                        if (item.quantity <= 0) {
+                            cart = cart.filter(item => item.id !== id);
+                        }
+                        updateCartUI();
+                    }
+                }
+                
+                if (e.target.closest('.increase-qty')) {
+                    const id = e.target.closest('.increase-qty').dataset.id;
+                    const item = cart.find(item => item.id === id);
+                    if (item) {
+                        item.quantity += 1;
+                        updateCartUI();
+                    }
+                }
+            });
+
+            // Cart modal functionality
+            function showCart() {
+                cartModal.classList.remove('hidden');
+                setTimeout(() => {
+                    cartPanel.classList.remove('translate-x-full');
+                }, 10);
+            }
+
+            function hideCart() {
+                cartPanel.classList.add('translate-x-full');
+                setTimeout(() => {
+                    cartModal.classList.add('hidden');
+                }, 300);
+            }
+
+            cartBtn.addEventListener('click', showCart);
+            closeCart.addEventListener('click', hideCart);
+            cartModal.addEventListener('click', function(e) {
+                if (e.target === cartModal) {
+                    hideCart();
+                }
+            });
+
+            // Order modal functionality
+            function showOrderModal() {
+                hideCart();
+                orderModal.classList.remove('hidden');
+                updateOrderSummary();
+                initDateTimeSelectors();
+            }
+
+            function hideOrderModal() {
+                orderModal.classList.add('hidden');
+            }
+
+            checkoutBtn.addEventListener('click', showOrderModal);
+            orderNowBtn.addEventListener('click', showOrderModal);
+            closeOrderModal.addEventListener('click', hideOrderModal);
+            orderModal.addEventListener('click', function(e) {
+                if (e.target === orderModal) {
+                    hideOrderModal();
+                }
+            });
+
+            // Delivery method toggle
+            document.addEventListener('change', function(e) {
+                if (e.target.name === 'delivery-method') {
+                    const isDelivery = e.target.value === 'delivery';
+                    if (isDelivery) {
+                        deliveryAddressDiv.classList.remove('hidden');
+                        deliveryAddressDiv.querySelector('#address').required = true;
+                    } else {
+                        deliveryAddressDiv.classList.add('hidden');
+                        deliveryAddressDiv.querySelector('#address').required = false;
+                    }
+                    
+                    // Update delivery option styling
+                    document.querySelectorAll('.delivery-option').forEach(option => {
+                        option.classList.remove('border-primary', 'bg-primary/5');
+                        option.classList.add('border-border');
+                    });
+                    e.target.closest('.delivery-option').classList.remove('border-border');
+                    e.target.closest('.delivery-option').classList.add('border-primary', 'bg-primary/5');
+                }
+            });
+
+            function updateOrderSummary() {
+                orderSummary.innerHTML = '';
+                cart.forEach(item => {
+                    const orderItem = document.createElement('div');
+                    orderItem.className = 'flex justify-between text-sm';
+                    orderItem.innerHTML = `
+                        <span>${item.name} x${item.quantity}</span>
+                        <span>$${(item.price * item.quantity).toLocaleString()}</span>
+                    `;
+                    orderSummary.appendChild(orderItem);
+                });
+            }
+
+            function initDateTimeSelectors() {
+                // Set minimum date to today
+                const today = new Date();
+                const dateInput = document.getElementById('order-date');
+                dateInput.min = today.toISOString().split('T')[0];
+                dateInput.value = today.toISOString().split('T')[0];
+                
+                generateTimeSlots();
+            }
+
+            function generateTimeSlots() {
+                // TODO: Implement real-time slot availability checking with API
+                const timeSelect = document.getElementById('order-time');
+                timeSelect.innerHTML = '<option value="">Seleccionar horario</option>';
+                
+                // Business hours: 11:00-15:00 and 19:00-24:00
+                const morningSlots = [];
+                const eveningSlots = [];
+                
+                // Morning slots (11:00-15:00)
+                for (let hour = 11; hour <= 14; hour++) {
+                    for (let minute = 0; minute < 60; minute += 20) {
+                        const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                        morningSlots.push(time);
+                    }
+                }
+                
+                // Evening slots (19:00-24:00)
+                for (let hour = 19; hour <= 23; hour++) {
+                    for (let minute = 0; minute < 60; minute += 20) {
+                        const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                        eveningSlots.push(time);
+                    }
+                }
+                
+                // Add morning group
+                const morningGroup = document.createElement('optgroup');
+                morningGroup.label = 'Almuerzo (11:00 - 15:00)';
+                morningSlots.forEach(time => {
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.textContent = time;
+                    morningGroup.appendChild(option);
+                });
+                timeSelect.appendChild(morningGroup);
+                
+                // Add evening group
+                const eveningGroup = document.createElement('optgroup');
+                eveningGroup.label = 'Cena (19:00 - 24:00)';
+                eveningSlots.forEach(time => {
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.textContent = time;
+                    eveningGroup.appendChild(option);
+                });
+                timeSelect.appendChild(eveningGroup);
+            }
+
+            // Order form submission
+            orderForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // TODO: Implement real form validation and API submission
+                
+                // Generate order number
+                const orderNum = 'MH' + Date.now().toString().slice(-6);
+                orderNumber.textContent = '#' + orderNum;
+                
+                // Show confirmation
+                hideOrderModal();
+                confirmationModal.classList.remove('hidden');
+                
+                // Clear cart
+                cart = [];
+                updateCartUI();
+            });
+
+            // Confirmation modal
+            closeConfirmation.addEventListener('click', function() {
+                confirmationModal.classList.add('hidden');
+            });
+
+            // Menu tabs
+            function switchMenuTab(activeTab, inactiveTab, activeContent, inactiveContent) {
+                activeTab.classList.add('active', 'bg-primary', 'text-primary-foreground');
+                activeTab.classList.remove('text-muted-foreground');
+                inactiveTab.classList.remove('active', 'bg-primary', 'text-primary-foreground');
+                inactiveTab.classList.add('text-muted-foreground');
+                
+                activeContent.classList.remove('hidden');
+                inactiveContent.classList.add('hidden');
+            }
+
+            pizzasTab.addEventListener('click', function() {
+                switchMenuTab(pizzasTab, empanadasTab, pizzasContent, empanadasContent);
+            });
+
+            empanadasTab.addEventListener('click', function() {
+                switchMenuTab(empanadasTab, pizzasTab, empanadasContent, pizzasContent);
+            });
+
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Smooth scrolling for navigation
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('a[href^="#"]')) {
+                    e.preventDefault();
+                    const target = document.querySelector(e.target.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        // Close mobile menu if open
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+
+            // Initialize menu tab styling
+            pizzasTab.classList.add('active', 'bg-primary', 'text-primary-foreground');
+            empanadasTab.classList.add('text-muted-foreground');
+
+            // Initialize delivery option styling
+            document.querySelector('input[name="delivery-method"]:checked').closest('.delivery-option').classList.add('border-primary', 'bg-primary/5');
+        })();
+    </script>
+</body>
+</html>
