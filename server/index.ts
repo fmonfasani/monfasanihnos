@@ -1,9 +1,10 @@
 import express, { type Request, Response, NextFunction } from "express";
+import serverless from "serverless-http";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { fileURLToPath } from "url";
 
-const app = express();
+export const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -37,12 +38,9 @@ app.use((req, res, next) => {
   next();
 });
 
-export const handler = app;
-export default app;
 
-const isDirectRun = process.argv[1] === fileURLToPath(import.meta.url);
+(async () => {
 
-async function init() {
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -62,17 +60,7 @@ async function init() {
     serveStatic(app);
   }
 
-  // ONLY start listening when executed directly
-  if (isDirectRun) {
-    const port = parseInt(process.env.PORT || '5000', 10);
-    server.listen({
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    }, () => {
-      log(`serving on port ${port}`);
-    });
-  }
-}
+})();
 
-void init();
+export const handler = serverless(app);
+export default app;
