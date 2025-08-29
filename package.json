@@ -9,7 +9,7 @@
     "check": "tsc",
     "db:push": "drizzle-kit push",
     "build:api": "esbuild api/index.ts --platform=node --bundle --format=esm --outfile=api/index.js",
-    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist && npm run build:api"
+    "build": "cross-env ROLLUP_USE_NODEJS=1 vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist && npm run build:api"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
