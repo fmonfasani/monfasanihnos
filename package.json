@@ -1,11 +1,10 @@
 {
   "name": "monfasani-hermanos",
   "version": "1.0.0",
-  "type": "module",
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development tsx server/index.ts",
-    "build": "vite build && esbuild server/index.ts --bundle --platform=node --format=esm --packages=external --outdir=api",
+    "build": "vite build && esbuild server/index.ts --bundle --platform=node --format=cjs --packages=external --outdir=api",
     "start": "NODE_ENV=production node api/index.js",
     "check": "tsc",
     "db:push": "drizzle-kit push"
