@@ -5,6 +5,7 @@ import {
   calendarSlots,
   promotions,
   settings,
+  categories,                 // <-- NUEVO
   type Product,
   type InsertProduct,
   type Order,
@@ -16,7 +17,9 @@ import {
   type Promotion,
   type InsertPromotion,
   type Setting,
-  type OrderWithItems
+  type OrderWithItems,
+  type Category,              // <-- NUEVO
+  type InsertCategory,        // <-- NUEVO
 } from "../shared/schema";
 
 import { db } from "../server/db";
@@ -26,6 +29,7 @@ export interface IStorage {
   // Products
   getProducts(): Promise<Product[]>;
   getProductsByType(type: string): Promise<Product[]>;
+  getProductsByCategory(categoryId: string): Promise<Product[]>;  // <-- NUEVO
   getProduct(id: string): Promise<Product | undefined>;
   createProduct(product: InsertProduct): Promise<Product>;
   updateProduct(id: string, product: Partial<InsertProduct>): Promise<Product | undefined>;
@@ -51,6 +55,12 @@ export interface IStorage {
   // Settings
   getSetting(key: string): Promise<Setting | undefined>;
   setSetting(key: string, value: any): Promise<Setting>;
+
+  // Categories
+  getCategories(): Promise<Category[]>;
+  getCategory(id: string): Promise<Category | undefined>;
+  createCategory(c: InsertCategory): Promise<Category>;
+  updateCategory(id: string, patch: Partial<InsertCategory>): Promise<Category | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -60,9 +70,11 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getProductsByType(type: string): Promise<Product[]> {
-    return db.select().from(products).where(
-      and(eq(products.type, type), eq(products.active, true))
-    );
+    return db.select().from(products).where(and(eq(products.type, type), eq(products.active, true)));
+  }
+
+  async getProductsByCategory(categoryId: string): Promise<Product[]> {
+    return db.select().from(products).where(and(eq(products.categoryId, categoryId), eq(products.active, true)));
   }
 
   async getProduct(id: string): Promise<Product | undefined> {
@@ -75,28 +87,15 @@ export class DatabaseStorage implements IStorage {
     return row;
   }
 
-  async updateProduct(
-    id: string,
-    patch: Partial<InsertProduct>
-  ): Promise<Product | undefined> {
-    const [row] = await db
-      .update(products)
-      .set(patch)
-      .where(eq(products.id, id))
-      .returning();
+  async updateProduct(id: string, patch: Partial<InsertProduct>): Promise<Product | undefined> {
+    const [row] = await db.update(products).set(patch).where(eq(products.id, id)).returning();
     return row ?? undefined;
   }
 
   // ---------- Orders ----------
   async getOrders(): Promise<OrderWithItems[]> {
     return db.query.orders.findMany({
-      with: {
-        items: {
-          with: {
-            product: true,
-          },
-        },
-      },
+      with: { items: { with: { product: true } } },
       orderBy: (t, { desc }) => [desc(t.createdAt)],
     });
   }
@@ -104,100 +103,49 @@ export class DatabaseStorage implements IStorage {
   async getOrder(id: string): Promise<OrderWithItems | undefined> {
     const row = await db.query.orders.findFirst({
       where: eq(orders.id, id),
-      with: {
-        items: {
-          with: {
-            product: true,
-          },
-        },
-      },
+      with: { items: { with: { product: true } } },
     });
     return row ?? undefined;
   }
 
-  async getOrderByNumber(
-    orderNumber: string
-  ): Promise<OrderWithItems | undefined> {
+  async getOrderByNumber(orderNumber: string): Promise<OrderWithItems | undefined> {
     const row = await db.query.orders.findFirst({
       where: eq(orders.orderNumber, orderNumber),
-      with: {
-        items: {
-          with: {
-            product: true,
-          },
-        },
-      },
+      with: { items: { with: { product: true } } },
     });
     return row ?? undefined;
   }
 
-  async createOrder(
-    orderData: InsertOrder,
-    itemsData: InsertOrderItem[]
-  ): Promise<OrderWithItems> {
-    // Generar número de orden único
+  async createOrder(orderData: InsertOrder, itemsData: InsertOrderItem[]): Promise<OrderWithItems> {
     const orderNumber = `MH${Date.now().toString().slice(-6)}`;
-
-    const [order] = await db
-      .insert(orders)
-      .values({
-        ...orderData,
-        orderNumber,
-      })
-      .returning();
-
-    // Insertar items de la orden
-    const rows = itemsData.map((item) => ({
-      ...item,
-      orderId: order.id,
-    }));
+    const [order] = await db.insert(orders).values({ ...orderData, orderNumber }).returning();
+    const rows = itemsData.map(i => ({ ...i, orderId: order.id }));
     await db.insert(orderItems).values(rows);
-
-    // Devolver la orden completa
     const full = await this.getOrder(order.id);
     return full!;
   }
 
-  async updateOrderStatus(
-    id: string,
-    status: string
-  ): Promise<Order | undefined> {
-    const [row] = await db
-      .update(orders)
-      .set({ status })
-      .where(eq(orders.id, id))
-      .returning();
+  async updateOrderStatus(id: string, status: string): Promise<Order | undefined> {
+    const [row] = await db.update(orders).set({ status }).where(eq(orders.id, id)).returning();
     return row ?? undefined;
   }
 
   // ---------- Calendar Slots ----------
   async getAvailableSlots(date: string): Promise<CalendarSlot[]> {
-    return db
-      .select()
-      .from(calendarSlots)
-      .where(and(eq(calendarSlots.date, date), eq(calendarSlots.active, true)));
+    return db.select().from(calendarSlots).where(and(eq(calendarSlots.date, date), eq(calendarSlots.active, true)));
   }
 
   async getSlot(date: string, time: string): Promise<CalendarSlot | undefined> {
-    const [row] = await db
-      .select()
-      .from(calendarSlots)
-      .where(
-        and(eq(calendarSlots.date, date), eq(calendarSlots.time, time))
-      );
+    const [row] = await db.select().from(calendarSlots).where(and(eq(calendarSlots.date, date), eq(calendarSlots.time, time)));
     return row ?? undefined;
   }
 
   async bookSlot(date: string, time: string): Promise<CalendarSlot | undefined> {
     const current = await this.getSlot(date, time);
     if (!current) return undefined;
-
-    const [row] = await db
-      .update(calendarSlots)
+    const [row] = await db.update(calendarSlots)
       .set({ bookedCount: current.bookedCount + 1 })
-      .where(
-        and(eq(calendarSlots.date, date), eq(calendarSlots.time, time))
-      )
+      .where(and(eq(calendarSlots.date, date), eq(calendarSlots.time, time)))
       .returning();
     return row ?? undefined;
   }
@@ -209,17 +157,11 @@ export class DatabaseStorage implements IStorage {
 
   // ---------- Promotions ----------
   async getActivePromotions(): Promise<Promotion[]> {
-    return db
-      .select()
-      .from(promotions)
-      .where(eq(promotions.active, true));
+    return db.select().from(promotions).where(eq(promotions.active, true));
   }
 
   async getPromotion(id: string): Promise<Promotion | undefined> {
-    const [row] = await db
-      .select()
-      .from(promotions)
-      .where(eq(promotions.id, id));
+    const [row] = await db.select().from(promotions).where(eq(promotions.id, id));
     return row ?? undefined;
   }
 
@@ -238,12 +180,29 @@ export class DatabaseStorage implements IStorage {
     const [row] = await db
       .insert(settings)
       .values({ key, value })
-      .onConflictDoUpdate({
-        target: settings.key,
-        set: { value, updatedAt: new Date() },
-      })
+      .onConflictDoUpdate({ target: settings.key, set: { value, updatedAt: new Date() } })
       .returning();
     return row;
+  }
+
+  // ---------- Categories ----------
+  async getCategories(): Promise<Category[]> {
+    return db.select().from(categories).where(eq(categories.active, true));
+  }
+
+  async getCategory(id: string): Promise<Category | undefined> {
+    const [row] = await db.select().from(categories).where(eq(categories.id, id));
+    return row ?? undefined;
+  }
+
+  async createCategory(c: InsertCategory): Promise<Category> {
+    const [row] = await db.insert(categories).values(c).returning();
+    return row;
+  }
+
+  async updateCategory(id: string, patch: Partial<InsertCategory>): Promise<Category | undefined> {
+    const [row] = await db.update(categories).set(patch).where(eq(categories.id, id)).returning();
+    return row ?? undefined;
   }
 }
 

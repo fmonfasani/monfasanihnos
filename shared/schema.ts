@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, boolean, timestamp, decimal, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, boolean, timestamp,uuid, decimal, jsonb } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -13,6 +13,7 @@ export const products = pgTable("products", {
   image: text("image"),
   active: boolean("active").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow(),
+  categoryId: uuid("category_id").references(() => categories.id),
 });
 
 export const orders = pgTable("orders", {
@@ -86,8 +87,25 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
   }),
 }));
 
-export const productsRelations = relations(products, ({ many }) => ({
-  orderItems: many(orderItems),
+// --- Relaciones (opcional pero útil)
+
+// --- NUEVO: tabla de categorías
+export const categories = pgTable("categories", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(),
+  description: text("description"),
+  active: boolean("active").notNull().default(true),
+});
+
+export const categoriesRelations = relations(categories, ({ many }) => ({
+  products: many(products),
+}));
+
+export const productsRelations = relations(products, ({ one }) => ({
+  category: one(categories, {
+    fields: [products.categoryId],
+    references: [categories.id],
+  }),
 }));
 
 // Insert schemas
@@ -133,6 +151,8 @@ export type Promotion = typeof promotions.$inferSelect;
 export type InsertPromotion = z.infer<typeof insertPromotionSchema>;
 export type Setting = typeof settings.$inferSelect;
 export type InsertSetting = z.infer<typeof insertSettingSchema>;
+export type Category = typeof categories.$inferSelect;
+export type InsertCategory = typeof categories.$inferInsert;
 
 // Order with items type
 export type OrderWithItems = Order & {
